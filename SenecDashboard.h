@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_SenecDashboard.h"
+#include "SenecClient.h"
 
 class SenecDashboard : public QMainWindow
 {
@@ -10,7 +11,10 @@ class SenecDashboard : public QMainWindow
 public:
     SenecDashboard(QWidget *parent = nullptr);
     ~SenecDashboard();
+    void updateView();
 
 private:
     Ui::SenecDashboardClass ui;
+    int x;
+    SenecClient* client;
 };
