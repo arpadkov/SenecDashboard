@@ -3,7 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-class PowerUsage
+class PowerState
 {
 private:
 	float self_suffiecency;
@@ -17,7 +17,13 @@ private:
 	std::string timestamp;
 
 public:
-	PowerUsage(nlohmann::json json_data);
+	PowerState(nlohmann::json json_data);
 
+	std::string getSelfSuffiency();
+	std::string getGridState();
+	std::string getBatteryState();
+	std::string getGeneration();
+	std::string getUsage();
+	std::string getBatterySOC();
 };
 

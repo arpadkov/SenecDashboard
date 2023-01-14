@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "PowerState.h"
 
 class SenecClient
 {
@@ -22,7 +23,7 @@ private:
 
 public:
 	SenecClient();
-	std::string getDashboardData();
+	PowerState getDashboardData();
 	
 };
 

@@ -88,13 +88,13 @@
     <QtRcc Include="SenecDashboard.qrc" />
     <QtUic Include="SenecDashboard.ui" />
     <QtMoc Include="SenecDashboard.h" />
-    <ClCompile Include="PowerUsage.cpp" />
+    <ClCompile Include="PowerState.cpp" />
     <ClCompile Include="SenecClient.cpp" />
     <ClCompile Include="SenecDashboard.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PowerUsage.h" />
+    <ClInclude Include="PowerState.h" />
     <ClInclude Include="SenecClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

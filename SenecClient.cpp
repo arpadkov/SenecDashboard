@@ -1,8 +1,8 @@
-
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 #include "SenecClient.h"
+#include "PowerState.h"
 //#include "HttpRequest.cpp"
 
 using namespace std;
@@ -126,11 +126,13 @@ string SenecClient::getLoginData()
 }
 
 
-string SenecClient::getDashboardData()
+PowerState SenecClient::getDashboardData()
 {
 	string dashboar_url = systems_url + battery_id + "/dashboard";
 	json dashboard_response = json::parse(getRequestWithAuth(dashboar_url.c_str(), token));
-	return dashboard_response.dump(4);
+	PowerState state = PowerState(dashboard_response);
+	return state;
+	//return dashboard_response.dump(4);
 }
 
 

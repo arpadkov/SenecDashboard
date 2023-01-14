@@ -43,7 +43,7 @@
     <ClCompile Include="SenecClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PowerUsage.cpp">
+    <ClCompile Include="PowerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,7 +51,7 @@
     <ClInclude Include="SenecClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUsage.h">
+    <ClInclude Include="PowerState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
