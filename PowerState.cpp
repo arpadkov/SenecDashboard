@@ -45,6 +45,12 @@ string PowerState::getTimeStamp()
 	return formatted_time;
 }
 
+string PowerState::getBatterySOC()
+{
+	// Returns battery StateOfCharge in percent
+	return roundFloatToStr(battery_soc, 2) + " %";
+}
+
 string PowerState::getGridState()
 {
 	// Returns formatted string in kW, to-grid->positive, from-grid->negative
@@ -98,13 +104,6 @@ string PowerState::getUsage()
 {
 	// Returns power usage formatted string in kWh
 	return roundFloatToStr(usage / 1000, 2) + " kW";
-}
-
-
-string PowerState::getBatterySOC()
-{
-	// Returns battery StateOfCharge in percent
-	return roundFloatToStr(battery_soc, 2) + " kW";
 }
 
 float PowerState::getGridUtilization()

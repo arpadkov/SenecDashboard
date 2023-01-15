@@ -11,7 +11,7 @@ private:
 	float to_grid;
 	float to_battery;
 	float from_battery;
-	float battery_soc;
+	
 	float generation;
 	float usage;
 	std::string timestamp;
@@ -23,6 +23,8 @@ private:
 
 public:
 	PowerState(nlohmann::json json_data);
+
+	float battery_soc;
 
 	std::string getSelfSuffiency();
 	std::string getTimeStamp();

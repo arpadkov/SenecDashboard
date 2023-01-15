@@ -25,7 +25,8 @@ private:
 
     void refreshViews();
     void updateWindow(PowerState*);
-    void updateTray(PowerState*);
+    void updateTrayIcon(PowerState*);
+    void updateTrayTooltip(PowerState*);
     void updateArrows(PowerState*);
 
     void updateGenerationArrow(PowerState*);

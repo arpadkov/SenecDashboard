@@ -11,10 +11,7 @@ SenecDashboard::SenecDashboard(QWidget *parent)
 
     // App + Tray Icon icon
     auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
-    this->trayIcon->setIcon(appIcon);
     this->setWindowIcon(appIcon);
-    QString tooltip = QString("tooltip");
-    this->trayIcon->setToolTip(tooltip);
     this->trayIcon->show();
 
     client = new SenecClient();
@@ -42,15 +39,19 @@ void SenecDashboard::refreshViews()
     PowerState state = client->getDashboardData();
 
     updateWindow(&state);
-    updateTray(&state);
+    updateTrayIcon(&state);
+    updateTrayTooltip(&state);
     updateArrows(&state);
 }
 
 void SenecDashboard::refreshViews(PowerState* state)
 {
     // Refreshes the view from test file
+    // IMPORTANT: must call the same methods as refreshViews()
+
     updateWindow(state);
-    updateTray(state);
+    updateTrayIcon(state);
+    updateTrayTooltip(state);
     updateArrows(state);
 }
 
@@ -62,6 +63,7 @@ void SenecDashboard::updateWindow(PowerState* state)
     //ui.testLabel->setText(qdata);
 
     QString battery_soc = QString::fromStdString(state->getBatterySOC());
+    ui.battery_SOCLabel->setText(battery_soc);
 
     QString generation = QString::fromStdString(state->getGeneration());
     ui.generationLabel->setText(generation);
@@ -76,9 +78,76 @@ void SenecDashboard::updateWindow(PowerState* state)
     ui.usageLabel->setText(usage);
 }
 
-void SenecDashboard::updateTray(PowerState* state)
+void SenecDashboard::updateTrayIcon(PowerState* state)
 {
-    // TODO implement update icons
+    float battery_soc = state->battery_soc;
+
+    if (battery_soc <= 1)
+    {
+        // Battery empty
+        this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_empty.png"));
+        return;
+    }
+
+    if (battery_soc >= 99)
+    {
+        // Battery full
+        this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_full.png"));
+        return;
+    }
+
+    if (state->drawingFromBattery())
+    {
+        if (battery_soc > 80)
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_80_100_discharging.png"));
+        }
+        else if (battery_soc > 50)
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_50_80_discharging.png"));
+        }
+        else if (battery_soc > 30)
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_30_60_discharging.png"));
+        }
+        else
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_0_30_discharging.png"));
+        }
+    }
+
+    else
+    {
+        if (battery_soc > 80)
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_80_100_charging.png"));
+        }
+        else if (battery_soc > 50)
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_50_80_charging.png"));
+        }
+        else if (battery_soc > 30)
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_30_60_charging.png"));
+        }
+        else
+        {
+            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_0_30_charging.png"));
+        }
+    }
+
+}
+
+void SenecDashboard::updateTrayTooltip(PowerState* state)
+{
+    QString tooltip = QString("");
+    tooltip.append("Battery: " + QString::fromStdString(state->getBatterySOC()) + "\n");
+    tooltip.append("Grid usage: " + QString::fromStdString(state->getGridState()) + "\n");
+    tooltip.append("Battery usage: " + QString::fromStdString(state->getBatteryState()) + "\n");
+    tooltip.append("Consumption: " + QString::fromStdString(state->getUsage()) + "\n");
+    tooltip.append("Production: " + QString::fromStdString(state->getGeneration()) + "\n");
+
+    this->trayIcon->setToolTip(tooltip);
 }
 
 void SenecDashboard::updateArrows(PowerState* state)
