@@ -14,7 +14,7 @@ string roundFloatToStr(float number, int precision)
 
 PowerState::PowerState(json json_data)
 {
-	string timestamp = json_data["zeitstempel"];
+	timestamp = json_data["zeitstempel"];
 
 	self_suffiecency = json_data["aktuell"]["autarkie"]["wert"];
 	from_grid = json_data["aktuell"]["netzbezug"]["wert"];
@@ -30,6 +30,13 @@ string PowerState::getSelfSuffiency()
 {
 	// Returns self-sufficency formatted string in percent
 	return roundFloatToStr(self_suffiecency, 2) + " %";
+}
+
+string PowerState::getTimeStamp()
+{
+	// Formatting the timestamp (a littlebit)
+	string formatted_time = timestamp.replace(10, 1, " ").replace(19, 1, "");
+	return formatted_time;
 }
 
 string PowerState::getGridState()

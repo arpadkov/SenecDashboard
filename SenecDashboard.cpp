@@ -17,9 +17,9 @@ void SenecDashboard::updateView()
 {
     PowerState state = client->getDashboardData();
 
-    //std::string self_sufficency = state.getBatteryState();
-
     QString self_sufficency = QString::fromStdString(state.getSelfSuffiency());
+    QString timestamp = QString::fromStdString(state.getTimeStamp());
+    ui.timeStampLabel->setText(timestamp);
     //ui.testLabel->setText(qdata);
 
     QString battery_soc = QString::fromStdString(state.getBatterySOC());

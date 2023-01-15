@@ -14,12 +14,12 @@
    <string>SenecDashboard</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="testLabel">
+   <widget class="QLabel" name="timeStampLabel">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>390</x>
       <y>340</y>
-      <width>71</width>
+      <width>171</width>
       <height>41</height>
      </rect>
     </property>

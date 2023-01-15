@@ -20,6 +20,8 @@ public:
 	PowerState(nlohmann::json json_data);
 
 	std::string getSelfSuffiency();
+	std::string getTimeStamp();
+
 	std::string getGridState();
 	std::string getBatteryState();
 	std::string getGeneration();
