@@ -1,3 +1,4 @@
+# include <QTimer>
 #include "SenecDashboard.h"
 #include "SenecClient.h"
 #include "PowerState.h"
@@ -17,6 +18,10 @@ SenecDashboard::SenecDashboard(QWidget *parent)
     this->trayIcon->show();
 
     client = new SenecClient();
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &SenecDashboard::on_refreshButton_clicked);
+    timer->start(3000);
 
     refreshViews();
 }
