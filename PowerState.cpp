@@ -70,14 +70,14 @@ string PowerState::getBatteryState()
 		return "0 kWh";
 	}
 
-	if (from_battery > to_grid) {
+	if (from_battery > to_battery) {
 		// Drawing power from battery
 		return roundFloatToStr(-1 * from_battery / 1000, 2) + " kW";
 	}
 	else
 	{
 		// Supplying power to battery
-		return roundFloatToStr(to_grid / 1000, 2) + " kW";
+		return roundFloatToStr(to_battery / 1000, 2) + " kW";
 	}
 }
 

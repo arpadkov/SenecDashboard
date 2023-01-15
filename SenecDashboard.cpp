@@ -31,6 +31,13 @@ void SenecDashboard::refreshViews()
     updateTray(&state);
 }
 
+void SenecDashboard::refreshViews(PowerState* state)
+{
+    // Refreshes the view from test file
+    updateWindow(state);
+    updateTray(state);
+}
+
 void SenecDashboard::updateWindow(PowerState* state)
 {
     QString self_sufficency = QString::fromStdString(state->getSelfSuffiency());
@@ -64,6 +71,8 @@ void SenecDashboard::on_refreshButton_clicked()
 }
 
 void SenecDashboard::testRead()
-{
-    int x = 5;
+{    
+    // Reads in test response from "SenecClient/test" and refreshes the view
+    PowerState state = client->getTestDashboardData();
+    refreshViews(&state);
 }

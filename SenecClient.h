@@ -24,6 +24,8 @@ private:
 public:
 	SenecClient();
 	PowerState getDashboardData();
+	PowerState getTestDashboardData();
+	//std::string getClientPath();
 	
 };
 

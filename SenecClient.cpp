@@ -135,4 +135,17 @@ PowerState SenecClient::getDashboardData()
 	//return dashboard_response.dump(4);
 }
 
+PowerState SenecClient::getTestDashboardData()
+{
+	// TODO: include exception handling for test response file not present/incorrect
+	string test_path = client_path + "\\test\\test_dashboard_response.json";
+	ifstream file(test_path);
+	json jfile = json::parse(file);
+
+	PowerState state = PowerState(jfile);
+
+	return state;
+}
+
+
 
