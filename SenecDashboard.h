@@ -1,8 +1,11 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QSystemTrayIcon>
+#include <QMenu>
 #include "ui_SenecDashboard.h"
 #include "SenecClient.h"
+#include "PowerState.h"
 
 class SenecDashboard : public QMainWindow
 {
@@ -11,10 +14,20 @@ class SenecDashboard : public QMainWindow
 public:
     SenecDashboard(QWidget *parent = nullptr);
     ~SenecDashboard();
-    void updateView();
+
+    void refreshViews();
+    void updateWindow(PowerState*);
+    void updateTray(PowerState*);
+
+    void refreshViews(PowerState*);     // For reading in test JSON response
 
 private:
+    QSystemTrayIcon* trayIcon;
+
     Ui::SenecDashboardClass ui;
-    int x;
     SenecClient* client;
+
+private slots:
+    void on_refreshButton_clicked();
+    void testRead();
 };

@@ -85,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtRcc Include="Resource.qrc" />
     <QtRcc Include="SenecDashboard.qrc" />
     <QtUic Include="SenecDashboard.ui" />
     <QtMoc Include="SenecDashboard.h" />
@@ -95,7 +96,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PowerState.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SenecClient.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SenecDashboard.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

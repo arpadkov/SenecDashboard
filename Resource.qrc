@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/logos">
+        <file>resources/strava_logo.png</file>
+    </qresource>
+</RCC>

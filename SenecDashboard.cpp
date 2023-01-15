@@ -4,35 +4,66 @@
 
 SenecDashboard::SenecDashboard(QWidget *parent)
     : QMainWindow(parent)
+    , trayIcon(new QSystemTrayIcon(this))
 {
-    ui.setupUi(this);
+    ui.setupUi(this);;
+
+    // App + Tray Icon icon
+    auto appIcon = QIcon(":/logos/resources/strava_logo.png");
+    this->trayIcon->setIcon(appIcon);
+    this->setWindowIcon(appIcon);
+    QString tooltip = QString("tooltip");
+    this->trayIcon->setToolTip(tooltip);
+    this->trayIcon->show();
+
     client = new SenecClient();
-    updateView();
+
+    refreshViews();
 }
 
 SenecDashboard::~SenecDashboard()
 {}
 
-void SenecDashboard::updateView()
+void SenecDashboard::refreshViews()
 {
     PowerState state = client->getDashboardData();
+    updateWindow(&state);
+    updateTray(&state);
+}
 
-    QString self_sufficency = QString::fromStdString(state.getSelfSuffiency());
-    QString timestamp = QString::fromStdString(state.getTimeStamp());
+void SenecDashboard::updateWindow(PowerState* state)
+{
+    QString self_sufficency = QString::fromStdString(state->getSelfSuffiency());
+    QString timestamp = QString::fromStdString(state->getTimeStamp());
     ui.timeStampLabel->setText(timestamp);
     //ui.testLabel->setText(qdata);
 
-    QString battery_soc = QString::fromStdString(state.getBatterySOC());
+    QString battery_soc = QString::fromStdString(state->getBatterySOC());
 
-    QString generation = QString::fromStdString(state.getGeneration());
+    QString generation = QString::fromStdString(state->getGeneration());
     ui.generationLabel->setText(generation);
 
-    QString grid_state = QString::fromStdString(state.getGridState());
+    QString grid_state = QString::fromStdString(state->getGridState());
     ui.gridLabel->setText(grid_state);
 
-    QString battery_state = QString::fromStdString(state.getBatteryState());
+    QString battery_state = QString::fromStdString(state->getBatteryState());
     ui.batteryLabel->setText(battery_state);
 
-    QString usage = QString::fromStdString(state.getUsage());
+    QString usage = QString::fromStdString(state->getUsage());
     ui.usageLabel->setText(usage);
+}
+
+void SenecDashboard::updateTray(PowerState* state)
+{
+    // TODO implement update icons
+}
+
+void SenecDashboard::on_refreshButton_clicked()
+{
+    refreshViews();
+}
+
+void SenecDashboard::testRead()
+{
+    int x = 5;
 }

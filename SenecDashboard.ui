@@ -155,6 +155,19 @@
      <enum>Qt::RichText</enum>
     </property>
    </widget>
+   <widget class="QPushButton" name="refreshButton">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>10</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -165,6 +178,13 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuTest">
+    <property name="title">
+     <string>Test</string>
+    </property>
+    <addaction name="actionRead_TestResponse"/>
+   </widget>
+   <addaction name="menuTest"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -175,10 +195,35 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionRead_TestResponse">
+   <property name="text">
+    <string>Read TestResponse</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="SenecDashboard.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionRead_TestResponse</sender>
+   <signal>triggered()</signal>
+   <receiver>SenecDashboardClass</receiver>
+   <slot>testRead()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>10</x>
+     <y>10</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>49</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>testRead()</slot>
+ </slots>
 </ui>
