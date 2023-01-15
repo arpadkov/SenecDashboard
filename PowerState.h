@@ -16,16 +16,29 @@ private:
 	float usage;
 	std::string timestamp;
 
+	float maxGridUtilization;
+	float maxBatteryUtilization;
+	float maxGenerationUtilization;
+	float maxUsageUtilization;
+
 public:
 	PowerState(nlohmann::json json_data);
 
 	std::string getSelfSuffiency();
 	std::string getTimeStamp();
+	std::string getBatterySOC();
 
 	std::string getGridState();
 	std::string getBatteryState();
 	std::string getGeneration();
 	std::string getUsage();
-	std::string getBatterySOC();
+
+	float getGridUtilization();
+	float getBatteryUtilization();
+	float getGenerationUtilization();
+	float getUsageUtilization();
+
+	bool drawingFromGrid();
+	bool drawingFromBattery();
 };
 

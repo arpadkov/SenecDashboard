@@ -15,17 +15,27 @@ public:
     SenecDashboard(QWidget *parent = nullptr);
     ~SenecDashboard();
 
-    void refreshViews();
-    void updateWindow(PowerState*);
-    void updateTray(PowerState*);
 
-    void refreshViews(PowerState*);     // For reading in test JSON response
 
 private:
     QSystemTrayIcon* trayIcon;
 
     Ui::SenecDashboardClass ui;
     SenecClient* client;
+
+    void refreshViews();
+    void updateWindow(PowerState*);
+    void updateTray(PowerState*);
+    void updateArrows(PowerState*);
+
+    void updateGenerationArrow(PowerState*);
+    void updateGridArrow(PowerState*);
+    void updateBatteryArrow(PowerState*);
+    void updateUsageArrow(PowerState*);
+
+    void refreshViews(PowerState*);     // For reading in test JSON response
+
+
 
 private slots:
     void on_refreshButton_clicked();

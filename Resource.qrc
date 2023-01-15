@@ -2,4 +2,21 @@
     <qresource prefix="/logos">
         <file>resources/strava_logo.png</file>
     </qresource>
+    <qresource prefix="/arrows">
+        <file>resources/arrow_right.png</file>
+        <file>resources/arrow_down.png</file>
+        <file>resources/arrow_left.png</file>
+    </qresource>
+    <qresource prefix="/battery_icon">
+        <file>resources/battery_0_30_charging.png</file>
+        <file>resources/battery_0_30_discharging.png</file>
+        <file>resources/battery_30_50_charging.png</file>
+        <file>resources/battery_30_50_discharging.png</file>
+        <file>resources/battery_50_80_charging.png</file>
+        <file>resources/battery_50_80_discharging.png</file>
+        <file>resources/battery_80_100_discharging.png</file>
+        <file>resources/battery_empty.png</file>
+        <file>resources/battery_80_100_charging.png</file>
+        <file>resources/battery_full.png</file>
+    </qresource>
 </RCC>

@@ -132,7 +132,6 @@ PowerState SenecClient::getDashboardData()
 	json dashboard_response = json::parse(getRequestWithAuth(dashboar_url.c_str(), token));
 	PowerState state = PowerState(dashboard_response);
 	return state;
-	//return dashboard_response.dump(4);
 }
 
 PowerState SenecClient::getTestDashboardData()

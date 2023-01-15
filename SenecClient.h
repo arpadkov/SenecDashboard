@@ -17,10 +17,6 @@ private:
 	void setAuthToken();
 	void setBatteryId();
 
-	//static std::string postRequest(const char* url, const char* data);
-	//static std::string getRequestWithAuth(const char* url, std::string authorization_token);
-	//size_t writeCallback(void* contents, size_t size, size_t nmemb, void* userp);
-
 public:
 	SenecClient();
 	PowerState getDashboardData();

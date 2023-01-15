@@ -16,6 +16,7 @@ PowerState::PowerState(json json_data)
 {
 	timestamp = json_data["zeitstempel"];
 
+	// All values in W
 	self_suffiecency = json_data["aktuell"]["autarkie"]["wert"];
 	from_grid = json_data["aktuell"]["netzbezug"]["wert"];
 	to_grid = json_data["aktuell"]["netzeinspeisung"]["wert"];
@@ -24,6 +25,11 @@ PowerState::PowerState(json json_data)
 	battery_soc = json_data["aktuell"]["speicherfuellstand"]["wert"];
 	generation = json_data["aktuell"]["stromerzeugung"]["wert"];
 	usage = json_data["aktuell"]["stromverbrauch"]["wert"];
+
+	maxGridUtilization = 5000;
+	maxBatteryUtilization = 2000;
+	maxGenerationUtilization = 5000;
+	maxUsageUtilization = 5000;
 }
 
 string PowerState::getSelfSuffiency()
@@ -49,7 +55,7 @@ string PowerState::getGridState()
 		return "0 kWh";
 	}
 
-	if (from_grid > to_grid) {
+	if (drawingFromGrid()) {
 		// Drawing power from grid
 		return roundFloatToStr(-1 * from_grid / 1000, 2) + " kW";
 	}
@@ -70,7 +76,7 @@ string PowerState::getBatteryState()
 		return "0 kWh";
 	}
 
-	if (from_battery > to_battery) {
+	if (drawingFromBattery()) {
 		// Drawing power from battery
 		return roundFloatToStr(-1 * from_battery / 1000, 2) + " kW";
 	}
@@ -101,4 +107,114 @@ string PowerState::getBatterySOC()
 	return roundFloatToStr(battery_soc, 2) + " kW";
 }
 
+float PowerState::getGridUtilization()
+{
+	// Returns utilization, used to adjust arrow width
+	// Max utilization defined in PowerState class
 
+	float utilization;
+
+	if (from_grid < 100 && to_grid < 100)
+	{
+		// Grid neglageble
+		return 0;
+	}
+
+	if (drawingFromGrid()) {
+		// Drawing power from grid
+		utilization = from_grid / maxGridUtilization;
+	}
+	else
+	{
+		// Supplying power to grid
+		utilization = to_grid / maxGridUtilization;
+	}
+
+	if (utilization > 1)
+	{
+		return 1;
+	}
+
+	return utilization;
+
+}
+
+float PowerState::getBatteryUtilization()
+{
+	// Returns utilization, used to adjust arrow width
+	// Max utilization defined in PowerState class
+
+	float utilization;
+
+	if (from_battery < 100 && to_battery < 100)
+	{
+		// Battery usage neglageble
+		return 0;
+	}
+
+	if (drawingFromBattery()) {
+		// Drawing power from battery
+		utilization = from_battery / maxBatteryUtilization;
+	}
+	else
+	{
+		// Supplying power to battery
+		utilization = to_battery / maxBatteryUtilization;
+	}
+
+	if (utilization > 1)
+	{
+		return 1;
+	}
+
+	return utilization;
+}
+
+float PowerState::getGenerationUtilization()
+{
+	// Returns utilization, used to adjust arrow width
+	// Max utilization defined in PowerState class
+
+	float utilization = generation / maxGenerationUtilization;
+
+	if (utilization > 1)
+	{
+		return 1;
+	}
+
+	return utilization;
+}
+
+float PowerState::getUsageUtilization()
+{
+	// Returns utilization, used to adjust arrow width
+	// Max utilization defined in PowerState class
+
+	float utilization = usage / maxUsageUtilization;
+
+	if (utilization > 1)
+	{
+		return 1;
+	}
+
+	return utilization;
+}
+
+bool PowerState::drawingFromGrid()
+{
+	if (from_grid > to_grid) {
+		return true;
+	}
+	
+	return false;
+}
+
+
+bool PowerState::drawingFromBattery()
+{
+	if (from_battery > to_battery) {
+		return true;
+	}
+
+	return false;
+}
