@@ -19,4 +19,9 @@
         <file>resources/battery_80_100_charging.png</file>
         <file>resources/battery_full.png</file>
     </qresource>
+    <qresource prefix="/consumers">
+        <file>resources/grid.png</file>
+        <file>resources/home.png</file>
+        <file>resources/solar_panel.png</file>
+    </qresource>
 </RCC>

@@ -28,6 +28,7 @@ private:
     QLabel* arrows[4];
 
     void setupStateLabels();
+    void setupStateIcons();
     void setupArrows();
     void setupTimer();
     void setupIcon();

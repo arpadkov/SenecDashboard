@@ -15,6 +15,7 @@ SenecDashboard::SenecDashboard(QWidget *parent)
     client = new SenecClient();
 
     setupStateLabels();
+    setupStateIcons();
     setupArrows();
 
     setupTimer();
@@ -38,6 +39,21 @@ void SenecDashboard::setupStateLabels()
     {
         ui.gridLayout->setAlignment(label, Qt::AlignCenter);
     }
+}
+
+void SenecDashboard::setupStateIcons()
+{
+    ui.gridIcon->setPixmap(QPixmap(":/consumers/resources/grid.png"));
+    ui.gridIcon->setScaledContents(true);
+    ui.gridIcon->setFixedSize(QSize(80, 80));
+
+    ui.consumptionIcon->setPixmap(QPixmap(":/consumers/resources/home.png"));
+    ui.consumptionIcon->setScaledContents(true);
+    ui.consumptionIcon->setFixedSize(QSize(80, 80));
+
+    ui.generationIcon->setPixmap(QPixmap(":/consumers/resources/solar_panel.png"));
+    ui.generationIcon->setScaledContents(true);
+    ui.generationIcon->setFixedSize(QSize(80, 80));
 }
 
 void SenecDashboard::setupArrows()
@@ -70,7 +86,6 @@ void SenecDashboard::setupIcon()
     // App + Tray Icon icon
     auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
     this->setWindowIcon(appIcon);
-    //this->trayIcon->setIcon(appIcon);
     this->trayIcon->show();
 }
 
@@ -119,7 +134,6 @@ void SenecDashboard::refreshViews()
         warningMessageBox.setText("SenecClient not initialized. Will not refresh data");
         warningMessageBox.exec();
     }
-
 }
 
 void SenecDashboard::setNoDataView()
@@ -237,7 +251,6 @@ void SenecDashboard::updateTrayIcon(PowerState* state)
             this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_0_30_charging.png"));
         }
     }
-
 }
 
 void SenecDashboard::updateTrayTooltip(PowerState* state)

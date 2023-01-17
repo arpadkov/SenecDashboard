@@ -79,6 +79,10 @@ std::string getRequestWithAuth(const char* url, std::string authorization_token)
 
 	res = curl_easy_perform(curl);
 
+	if (res != CURLE_OK) {
+		throw NetworkErrorException();
+	}
+
 	curl_easy_cleanup(curl);
 
 	return response;
@@ -140,8 +144,21 @@ void SenecClient::setBatteryId()
 string SenecClient::getLoginData(string login_file)
 {
 	// TODO: include exception handling for login file not present/incorrect
+
 	ifstream file(client_path + login_file);
-	json jfile = json::parse(file);
+	if (!file)
+	{
+		throw IncorrectLoginFileException();		
+	}
+	
+	json jfile;
+	try
+	{
+		jfile = json::parse(file);
+	}
+	catch (json::parse_error parseError) {
+		throw;
+	}
 
 	return jfile.dump();
 }

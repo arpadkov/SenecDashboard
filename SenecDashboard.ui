@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>746</width>
+    <width>732</width>
     <height>569</height>
    </rect>
   </property>
@@ -40,12 +40,12 @@
      <string>PushButton</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>611</width>
+      <width>531</width>
       <height>421</height>
      </rect>
     </property>
@@ -82,7 +82,7 @@
      <item row="1" column="2">
       <widget class="QLabel" name="generationArrow">
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="text">
         <string/>
@@ -121,7 +121,7 @@
      <item row="2" column="1">
       <widget class="QLabel" name="gridArrow">
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="text">
         <string/>
@@ -131,7 +131,7 @@
      <item row="2" column="3">
       <widget class="QLabel" name="batteryArrow">
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="text">
         <string/>
@@ -167,7 +167,7 @@
      <item row="3" column="2">
       <widget class="QLabel" name="usageArrow">
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="text">
         <string/>
@@ -229,6 +229,34 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="generationIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="gridIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="4">
+      <widget class="QLabel" name="batteryIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="consumptionIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -237,7 +265,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>746</width>
+     <width>732</width>
      <height>22</height>
     </rect>
    </property>
@@ -276,8 +304,8 @@
    <slot>testRead()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>10</x>
-     <y>10</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>49</x>
