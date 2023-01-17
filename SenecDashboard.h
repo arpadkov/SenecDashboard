@@ -15,7 +15,7 @@ public:
     SenecDashboard(QWidget *parent = nullptr);
     ~SenecDashboard();
 
-    void initializeClient();
+    bool initializeClient();
     void refreshViews();
 
 private:
@@ -24,8 +24,17 @@ private:
     Ui::SenecDashboardClass ui;
     SenecClient* client;
 
+    QLabel* stateLabels[6];
+    QLabel* arrows[4];
+
+    void setupStateLabels();
+    void setupArrows();
+    void setupTimer();
+    void setupIcon();
+
     void refreshViews(PowerState*);     // For reading in test JSON response
 
+    void setNoDataView();
     void updateWindow(PowerState*);
     void updateTrayIcon(PowerState*);
     void updateTrayTooltip(PowerState*);

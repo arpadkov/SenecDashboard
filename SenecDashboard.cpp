@@ -12,47 +12,99 @@ SenecDashboard::SenecDashboard(QWidget *parent)
 {
     ui.setupUi(this);
 
-    // App + Tray Icon icon
-    auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
-    this->setWindowIcon(appIcon);
-    this->trayIcon->show();
+    client = new SenecClient();
 
-    // Setting up timer, connected to refreshButton click signal
-    // Refreshes every 5 minutes
-    QTimer* timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &SenecDashboard::on_refreshButton_clicked);
-    timer->start(300000);
+    setupStateLabels();
+    setupArrows();
 
-    // Aligning labels
-    ui.gridLayout->setAlignment(ui.generationLabel, Qt::AlignCenter);
-    ui.gridLayout->setAlignment(ui.gridLabel, Qt::AlignCenter);
-    ui.gridLayout->setAlignment(ui.batteryLabel, Qt::AlignCenter);
-    ui.gridLayout->setAlignment(ui.usageLabel, Qt::AlignCenter);
+    setupTimer();
+    setupIcon();
 }
 
 SenecDashboard::~SenecDashboard()
 {}
 
-void SenecDashboard::initializeClient()
+void SenecDashboard::setupStateLabels()
 {
-    client = new SenecClient();
+    // Assigning labels to array for easier handling
+    stateLabels[0] = ui.timeStampLabel;
+    stateLabels[1] = ui.battery_SOCLabel;
+    stateLabels[2] = ui.generationLabel;
+    stateLabels[3] = ui.gridLabel;
+    stateLabels[4] = ui.batteryLabel;
+    stateLabels[5] = ui.usageLabel;
+
+    for (QLabel* label : stateLabels)
+    {
+        ui.gridLayout->setAlignment(label, Qt::AlignCenter);
+    }
+}
+
+void SenecDashboard::setupArrows()
+{
+    // Assigning arrows to array for easier handling
+    arrows[0] = ui.generationArrow;
+    arrows[1] = ui.gridArrow;
+    arrows[2] = ui.batteryArrow;
+    arrows[3] = ui.usageArrow;
+
+    for (QLabel* arrow : arrows)
+    {
+        ui.gridLayout->setAlignment(arrow, Qt::AlignCenter);
+        arrow->setScaledContents(true);
+    }
+}
+
+void SenecDashboard::setupTimer()
+{
+    // Setting up timer, connected to refreshButton click signal
+    // Refreshes every 5 minutes
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &SenecDashboard::on_refreshButton_clicked);
+    timer->start(300000);
+}
+
+void SenecDashboard::setupIcon()
+{
+    // App + Tray Icon icon
+    auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
+    this->setWindowIcon(appIcon);
+    //this->trayIcon->setIcon(appIcon);
+    this->trayIcon->show();
+}
+
+bool SenecDashboard::initializeClient()
+{
     try
     {
-        client->setAuthToken("\\test\\unittest\\login_data_invalid.json");
+        client->setAuthToken("\\login_data.json");
         client->setBatteryId();
+        return true;
     }
     catch (const std::exception& ex)
     {
         QMessageBox warningMessageBox;
         warningMessageBox.setText(ex.what());
         warningMessageBox.exec();
-        //std::string message = e.what();
+        return false;
     }
 }
 
 void SenecDashboard::refreshViews()
 {
+    setNoDataView();
+
     if (client->Initialized)
+    {
+        PowerState state = client->getDashboardData();
+
+        updateWindow(&state);
+        updateTrayIcon(&state);
+        updateTrayTooltip(&state);
+        updateArrows(&state);
+    }
+    else if (initializeClient())
     {
         PowerState state = client->getDashboardData();
 
@@ -70,6 +122,30 @@ void SenecDashboard::refreshViews()
 
 }
 
+void SenecDashboard::setNoDataView()
+{
+    // Set Labels
+    for (QLabel* label : stateLabels)
+    {
+        label->setText("-");
+    }
+
+    // Set Arrows
+    for (QLabel* arrow : arrows)
+    {
+        arrow->hide();
+    }
+
+    // Set TrayTooltip
+    QString tooltip = QString("Could not get data");
+    this->trayIcon->setToolTip(tooltip);
+
+
+    // Set TrayIcon
+    this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_empty.png"));
+
+}
+
 void SenecDashboard::refreshViews(PowerState* state)
 {
     // Refreshes the view from test file
@@ -84,9 +160,9 @@ void SenecDashboard::refreshViews(PowerState* state)
 void SenecDashboard::updateWindow(PowerState* state)
 {
     QString self_sufficency = QString::fromStdString(state->getSelfSuffiency());
+
     QString timestamp = QString::fromStdString(state->getTimeStamp());
     ui.timeStampLabel->setText(timestamp);
-    //ui.testLabel->setText(qdata);
 
     QString battery_soc = QString::fromStdString(state->getBatterySOC());
     ui.battery_SOCLabel->setText(battery_soc);
@@ -182,16 +258,18 @@ void SenecDashboard::updateArrows(PowerState* state)
     updateGridArrow(state);
     updateBatteryArrow(state);
     updateUsageArrow(state);
+
+    for (QLabel* arrow : arrows)
+    {
+        arrow->show();
+    }
 }
 
 void SenecDashboard::updateGenerationArrow(PowerState* state)
 {
     float utilization = state->getGenerationUtilization();
 
-    // General setting for arrow
     ui.generationArrow->setPixmap(QPixmap(":/arrows/resources/arrow_down.png"));
-    ui.generationArrow->setScaledContents(true);
-    ui.gridLayout->setAlignment(ui.generationArrow, Qt::AlignCenter);
     ui.generationArrow->setFixedHeight(80);
 
     // Calculating width based on utilization
@@ -205,9 +283,6 @@ void SenecDashboard::updateGridArrow(PowerState* state)
 {
     float utilization = state->getGridUtilization();
 
-    // General setting for arrow
-    ui.gridArrow->setScaledContents(true);
-    ui.gridLayout->setAlignment(ui.gridArrow, Qt::AlignCenter);
     ui.gridArrow->setFixedWidth(80);
 
     if (state->drawingFromGrid())
@@ -230,9 +305,6 @@ void SenecDashboard::updateBatteryArrow(PowerState* state)
 {
     float utilization = state->getBatteryUtilization();
 
-    // General setting for arrow
-    ui.batteryArrow->setScaledContents(true);
-    ui.gridLayout->setAlignment(ui.batteryArrow, Qt::AlignCenter);
     ui.batteryArrow->setFixedWidth(80);
 
     if (state->drawingFromBattery())
@@ -255,10 +327,7 @@ void SenecDashboard::updateUsageArrow(PowerState* state)
 {
     float utilization = state->getUsageUtilization();
 
-    // General setting for arrow
     ui.usageArrow->setPixmap(QPixmap(":/arrows/resources/arrow_down.png"));
-    ui.usageArrow->setScaledContents(true);
-    ui.gridLayout->setAlignment(ui.usageArrow, Qt::AlignCenter);
     ui.usageArrow->setFixedHeight(80);
 
     // Calculating width based on utilization
