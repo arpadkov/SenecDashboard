@@ -49,9 +49,6 @@
     <ClCompile Include="PowerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Exceptions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SenecClient.h">

@@ -43,7 +43,7 @@ std::string postRequest(const char* url, const char* data)
 	res = curl_easy_perform(curl);
 
 	if (res != CURLE_OK) {
-		throw MyException();
+		throw NetworkErrorException();
 	}
 
 	curl_easy_cleanup(curl);
@@ -113,7 +113,7 @@ void SenecClient::setAuthToken(string login_file)
 	{
 		authentication_response_string = postRequest(login_url.c_str(), login_data.c_str());
 	}
-	catch (MyException& e)
+	catch (NetworkErrorException& e)
 	{
 		throw;
 	}
@@ -126,7 +126,7 @@ void SenecClient::setAuthToken(string login_file)
 	}
 	else
 	{
-		throw MyException();
+		throw InvalidCredentialsException();
 	}
 }
 

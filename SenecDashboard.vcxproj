@@ -99,7 +99,6 @@
     <QtRcc Include="SenecDashboard.qrc" />
     <QtUic Include="SenecDashboard.ui" />
     <QtMoc Include="SenecDashboard.h" />
-    <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="PowerState.cpp" />
     <ClCompile Include="SenecClient.cpp" />
     <ClCompile Include="SenecDashboard.cpp" />

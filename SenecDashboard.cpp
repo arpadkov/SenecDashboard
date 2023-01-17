@@ -41,10 +41,10 @@ void SenecDashboard::initializeClient()
         client->setAuthToken("\\test\\unittest\\login_data_invalid.json");
         client->setBatteryId();
     }
-    catch (MyException& e)
+    catch (const std::exception& ex)
     {
         QMessageBox warningMessageBox;
-        warningMessageBox.setText(e.what());
+        warningMessageBox.setText(ex.what());
         warningMessageBox.exec();
         //std::string message = e.what();
     }
@@ -64,7 +64,7 @@ void SenecDashboard::refreshViews()
     else
     {
         QMessageBox warningMessageBox;
-        warningMessageBox.setText("SenecClient not initialized. Check Connection");
+        warningMessageBox.setText("SenecClient not initialized. Will not refresh data");
         warningMessageBox.exec();
     }
 
