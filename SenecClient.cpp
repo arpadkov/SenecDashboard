@@ -3,7 +3,7 @@
 #include <curl/curl.h>
 #include "SenecClient.h"
 #include "PowerState.h"
-//#include "HttpRequest.cpp"
+#include "Exceptions.cpp"
 
 using namespace std;
 using json = nlohmann::json;
@@ -22,7 +22,7 @@ std::string postRequest(const char* url, const char* data)
 	CURL* curl;
 	curl = curl_easy_init();
 
-	string response;
+	std::string response;
 
 	// curl setup
 	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
@@ -42,19 +42,23 @@ std::string postRequest(const char* url, const char* data)
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
 	res = curl_easy_perform(curl);
 
+	if (res != CURLE_OK) {
+		throw MyException();
+	}
+
 	curl_easy_cleanup(curl);
 
 	return response;
 }
 
-string getRequestWithAuth(const char* url, string authorization_token)
+std::string getRequestWithAuth(const char* url, std::string authorization_token)
 {
 	// Sending a GET request with Authorization token in the header
 	CURL* curl;
 	CURLcode res;
 	curl = curl_easy_init();
 
-	string response;
+	std::string response;
 
 	// curl setup
 	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
@@ -64,7 +68,7 @@ string getRequestWithAuth(const char* url, string authorization_token)
 
 	// Headers
 	struct curl_slist* headers = NULL;
-	string auth_string = "Authorization: " + authorization_token;   // Authorization header as string
+	std::string auth_string = "Authorization: " + authorization_token;   // Authorization header as string
 	const char* auth_header = auth_string.c_str();                  // converted to const char* for curl
 	headers = curl_slist_append(headers, auth_header);
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -80,12 +84,13 @@ string getRequestWithAuth(const char* url, string authorization_token)
 	return response;
 }
 
+
 SenecClient::SenecClient()
 {
 	login_url = "https://app-gateway-prod.senecops.com/v1/senec/login/";
 	systems_url = "https://app-gateway-prod.senecops.com/v1/senec/anlagen/";
 
-	// Getting path to login file
+	// Setting path to login file
 	char* buf = nullptr;
 	size_t sz = 0;
 	if (_dupenv_s(&buf, &sz, "AppData") == 0 && buf != nullptr)
@@ -94,19 +99,25 @@ SenecClient::SenecClient()
 		free(buf);
 	}
 	client_path += "\\SenecClient";
-	login_filename = "\\login_data.json";
-
-	// Setting Authorization token and battery ID
-	setAuthToken();
-	setBatteryId();
+	//login_filename = "\\login_data.json";
 }
 
-void SenecClient::setAuthToken()
+void SenecClient::setAuthToken(string login_file)
 {
 	// Setting Authentication token
-	string login_data = getLoginData();
-	json authentication_response = json::parse(postRequest(login_url.c_str(), login_data.c_str()));
-	token = authentication_response["token"];
+	string login_data = getLoginData(login_file);
+	try
+	{
+		string authentication_response_string = postRequest(login_url.c_str(), login_data.c_str());
+		json authentication_response = json::parse(authentication_response_string);
+		token = authentication_response["token"];
+	}
+	catch (MyException& e)
+	{
+		string message = e.what();
+	}
+
+
 }
 
 void SenecClient::setBatteryId()
@@ -116,10 +127,10 @@ void SenecClient::setBatteryId()
 	battery_id = systems_response[0]["id"];          // Potentially multiple batteries available, selecting the first one
 }
 
-string SenecClient::getLoginData()
+string SenecClient::getLoginData(string login_file)
 {
 	// TODO: include exception handling for login file not present/incorrect
-	ifstream file(client_path + login_filename);
+	ifstream file(client_path + login_file);
 	json jfile = json::parse(file);
 
 	return jfile.dump();

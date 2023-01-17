@@ -6,20 +6,24 @@
 class SenecClient
 {
 private:
-	std::string login_filename;
+	//std::string login_filename;
 	std::string login_url;
 	std::string systems_url;
 	std::string client_path;
 	std::string token;
 	std::string battery_id;
 
-	std::string getLoginData();
-	void setAuthToken();
-	void setBatteryId();
+	std::string getLoginData(std::string login_file);
 
 public:
 	SenecClient();
+
+	void setAuthToken(std::string login_file);
+	void setBatteryId();
+
 	PowerState getDashboardData();
 	PowerState getTestDashboardData();
 };
+
+
 

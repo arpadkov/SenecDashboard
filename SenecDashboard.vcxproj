@@ -58,6 +58,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard>$(Qt_STDCPP_)</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <LanguageStandard>$(Qt_STDCPP_)</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -89,6 +99,7 @@
     <QtRcc Include="SenecDashboard.qrc" />
     <QtUic Include="SenecDashboard.ui" />
     <QtMoc Include="SenecDashboard.h" />
+    <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="PowerState.cpp" />
     <ClCompile Include="SenecClient.cpp" />
     <ClCompile Include="SenecDashboard.cpp" />

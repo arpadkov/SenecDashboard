@@ -7,14 +7,17 @@ SenecDashboard::SenecDashboard(QWidget *parent)
     : QMainWindow(parent)
     , trayIcon(new QSystemTrayIcon(this))
 {
-    ui.setupUi(this);;
+    ui.setupUi(this);
+
+    // Initializing client
+    client = new SenecClient();
+    client->setAuthToken("\\login_data.json");
+    client->setBatteryId();
 
     // App + Tray Icon icon
     auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
     this->setWindowIcon(appIcon);
     this->trayIcon->show();
-
-    client = new SenecClient();
 
     // Setting up timer, connected to refreshButton click signal
     // Refreshes every 5 minutes
