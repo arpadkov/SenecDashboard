@@ -3,7 +3,7 @@
 #include "SenecDashboard.h"
 #include "SenecClient.h"
 #include "PowerState.h"
-#include "Exceptions.cpp"
+#include "Exceptions.h"
 
 
 SenecDashboard::SenecDashboard(QWidget *parent)

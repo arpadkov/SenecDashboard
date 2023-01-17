@@ -3,7 +3,7 @@
 #include <curl/curl.h>
 #include "SenecClient.h"
 #include "PowerState.h"
-#include "Exceptions.cpp"
+#include "Exceptions.h"
 
 using namespace std;
 using json = nlohmann::json;
