@@ -4,7 +4,9 @@
 int main(int argc, char *argv[])
 {
     QApplication application(argc, argv);
-    SenecDashboard window;
-    window.show();
+    SenecDashboard dashboard;
+    dashboard.show();
+    dashboard.initializeClient();
+    dashboard.refreshViews();
     return application.exec();
 }

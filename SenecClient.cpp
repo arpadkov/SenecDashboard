@@ -87,6 +87,8 @@ std::string getRequestWithAuth(const char* url, std::string authorization_token)
 
 SenecClient::SenecClient()
 {
+	Initialized = false;
+
 	login_url = "https://app-gateway-prod.senecops.com/v1/senec/login/";
 	systems_url = "https://app-gateway-prod.senecops.com/v1/senec/anlagen/";
 
@@ -99,25 +101,33 @@ SenecClient::SenecClient()
 		free(buf);
 	}
 	client_path += "\\SenecClient";
-	//login_filename = "\\login_data.json";
 }
 
 void SenecClient::setAuthToken(string login_file)
 {
 	// Setting Authentication token
 	string login_data = getLoginData(login_file);
+	string authentication_response_string;
+
 	try
 	{
-		string authentication_response_string = postRequest(login_url.c_str(), login_data.c_str());
-		json authentication_response = json::parse(authentication_response_string);
-		token = authentication_response["token"];
+		authentication_response_string = postRequest(login_url.c_str(), login_data.c_str());
 	}
 	catch (MyException& e)
 	{
-		string message = e.what();
+		throw;
 	}
 
-
+	if (authentication_response_string != "")
+	{
+		json authentication_response = json::parse(authentication_response_string);
+		token = authentication_response["token"];
+		Initialized = true;
+	}
+	else
+	{
+		throw MyException();
+	}
 }
 
 void SenecClient::setBatteryId()

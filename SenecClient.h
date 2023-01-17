@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
+//#include <string>
 #include "PowerState.h"
 
 class SenecClient
 {
 private:
-	//std::string login_filename;
 	std::string login_url;
 	std::string systems_url;
 	std::string client_path;
@@ -17,6 +16,8 @@ private:
 
 public:
 	SenecClient();
+
+	bool Initialized;
 
 	void setAuthToken(std::string login_file);
 	void setBatteryId();

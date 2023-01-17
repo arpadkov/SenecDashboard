@@ -1,18 +1,16 @@
 # include <QTimer>
+#include <QMessageBox>
 #include "SenecDashboard.h"
 #include "SenecClient.h"
 #include "PowerState.h"
+#include "Exceptions.cpp"
+
 
 SenecDashboard::SenecDashboard(QWidget *parent)
     : QMainWindow(parent)
     , trayIcon(new QSystemTrayIcon(this))
 {
     ui.setupUi(this);
-
-    // Initializing client
-    client = new SenecClient();
-    client->setAuthToken("\\login_data.json");
-    client->setBatteryId();
 
     // App + Tray Icon icon
     auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
@@ -30,21 +28,46 @@ SenecDashboard::SenecDashboard(QWidget *parent)
     ui.gridLayout->setAlignment(ui.gridLabel, Qt::AlignCenter);
     ui.gridLayout->setAlignment(ui.batteryLabel, Qt::AlignCenter);
     ui.gridLayout->setAlignment(ui.usageLabel, Qt::AlignCenter);
-
-    refreshViews();
 }
 
 SenecDashboard::~SenecDashboard()
 {}
 
+void SenecDashboard::initializeClient()
+{
+    client = new SenecClient();
+    try
+    {
+        client->setAuthToken("\\test\\unittest\\login_data_invalid.json");
+        client->setBatteryId();
+    }
+    catch (MyException& e)
+    {
+        QMessageBox warningMessageBox;
+        warningMessageBox.setText(e.what());
+        warningMessageBox.exec();
+        //std::string message = e.what();
+    }
+}
+
 void SenecDashboard::refreshViews()
 {
-    PowerState state = client->getDashboardData();
+    if (client->Initialized)
+    {
+        PowerState state = client->getDashboardData();
 
-    updateWindow(&state);
-    updateTrayIcon(&state);
-    updateTrayTooltip(&state);
-    updateArrows(&state);
+        updateWindow(&state);
+        updateTrayIcon(&state);
+        updateTrayTooltip(&state);
+        updateArrows(&state);
+    }
+    else
+    {
+        QMessageBox warningMessageBox;
+        warningMessageBox.setText("SenecClient not initialized. Check Connection");
+        warningMessageBox.exec();
+    }
+
 }
 
 void SenecDashboard::refreshViews(PowerState* state)
