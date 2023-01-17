@@ -96,7 +96,7 @@ SenecClient::SenecClient()
 	login_url = "https://app-gateway-prod.senecops.com/v1/senec/login/";
 	systems_url = "https://app-gateway-prod.senecops.com/v1/senec/anlagen/";
 
-	// Setting path to login file
+	// Setting path to client folder
 	char* buf = nullptr;
 	size_t sz = 0;
 	if (_dupenv_s(&buf, &sz, "AppData") == 0 && buf != nullptr)
