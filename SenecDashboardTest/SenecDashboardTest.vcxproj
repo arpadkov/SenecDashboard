@@ -170,11 +170,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SenecDashboard.vcxproj">
       <Project>{fd2aaf4a-e439-454d-92fc-03541da4063b}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SenecDashboardTest.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\unittest\dashboard_response.json" />
+    <None Include="resources\unittest\login_data_incorrect_format.json" />
+    <None Include="resources\unittest\login_data_invalid.json" />
+    <None Include="resources\unittest\login_data_valid.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

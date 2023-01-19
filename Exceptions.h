@@ -14,7 +14,7 @@ struct NetworkErrorException : public std::exception {
     }
 };
 
-struct IncorrectLoginFileException : public std::exception {
+struct LoginFileNotFoundException : public std::exception {
     const char* what() const throw () {
         return "Login file is either not found or not in correct format";
     }

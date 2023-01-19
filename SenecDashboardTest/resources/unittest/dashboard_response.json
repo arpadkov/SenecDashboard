@@ -1,0 +1,80 @@
+{
+    "aktuell": {
+        "autarkie": {
+            "einheit": "%",
+            "wert": 99.29
+        },
+        "netzbezug": {
+            "einheit": "W",
+            "wert": 5.859
+        },
+        "netzeinspeisung": {
+            "einheit": "W",
+            "wert": 1700.578
+        },
+        "speicherbeladung": {
+            "einheit": "W",
+            "wert": 1000.1
+        },
+        "speicherentnahme": {
+            "einheit": "W",
+            "wert": 100.01
+        },
+        "speicherfuellstand": {
+            "einheit": "%",
+            "wert": 81.0
+        },
+        "stromerzeugung": {
+            "einheit": "W",
+            "wert": 1265.625
+        },
+        "stromverbrauch": {
+            "einheit": "W",
+            "wert": 8200.0
+        },
+        "wallbox": {
+            "einheit": "W",
+            "wert": 0.01
+        }
+    },
+    "electricVehicleConnected": false,
+    "heute": {
+        "autarkie": {
+            "einheit": "%",
+            "wert": 61.52
+        },
+        "netzbezug": {
+            "einheit": "Wh",
+            "wert": 5077.1484375
+        },
+        "netzeinspeisung": {
+            "einheit": "Wh",
+            "wert": 764.16015625
+        },
+        "speicherbeladung": {
+            "einheit": "Wh",
+            "wert": 2415.771484375
+        },
+        "speicherentnahme": {
+            "einheit": "Wh",
+            "wert": 1241.455078125
+        },
+        "speicherfuellstand": {
+            "einheit": "%",
+            "wert": 1.8716577291488647
+        },
+        "stromerzeugung": {
+            "einheit": "Wh",
+            "wert": 10054.6875
+        },
+        "stromverbrauch": {
+            "einheit": "Wh",
+            "wert": 13190.0
+        },
+        "wallbox": {
+            "einheit": "Wh",
+            "wert": 0.0
+        }
+    },
+    "zeitstempel": "9999-01-14T13:14:14Z"
+}

@@ -2,91 +2,14 @@
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 #include "SenecClient.h"
+#include "HttpClient.h"
 #include "PowerState.h"
 #include "Exceptions.h"
 
 using namespace std;
 using json = nlohmann::json;
 
-static size_t writeCallback(void* contents, size_t size, size_t nmemb, void* userp)
-{
-	// WriteCallback function, used by curl: CURLOPT_WRITEFUNCTION
-	((std::string*)userp)->append((char*)contents, size * nmemb);
-	return size * nmemb;
-}
 
-std::string postRequest(const char* url, const char* data)
-{
-	// Sending a POST request with json data
-	CURLcode res;
-	CURL* curl;
-	curl = curl_easy_init();
-
-	std::string response;
-
-	// curl setup
-	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
-	curl_easy_setopt(curl, CURLOPT_URL, url);
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_DEFAULT_PROTOCOL, "https");
-
-	// Headers
-	struct curl_slist* headers = NULL;
-	headers = curl_slist_append(headers, "Content-Type: application/json");
-	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-	// Writing the data
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-
-	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
-	res = curl_easy_perform(curl);
-
-	if (res != CURLE_OK) {
-		throw NetworkErrorException();
-	}
-
-	curl_easy_cleanup(curl);
-
-	return response;
-}
-
-std::string getRequestWithAuth(const char* url, std::string authorization_token)
-{
-	// Sending a GET request with Authorization token in the header
-	CURL* curl;
-	CURLcode res;
-	curl = curl_easy_init();
-
-	std::string response;
-
-	// curl setup
-	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
-	curl_easy_setopt(curl, CURLOPT_URL, url);
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_DEFAULT_PROTOCOL, "https");
-
-	// Headers
-	struct curl_slist* headers = NULL;
-	std::string auth_string = "Authorization: " + authorization_token;   // Authorization header as string
-	const char* auth_header = auth_string.c_str();                  // converted to const char* for curl
-	headers = curl_slist_append(headers, auth_header);
-	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-	// Writing the data
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-
-	res = curl_easy_perform(curl);
-
-	if (res != CURLE_OK) {
-		throw NetworkErrorException();
-	}
-
-	curl_easy_cleanup(curl);
-
-	return response;
-}
 
 
 SenecClient::SenecClient()
@@ -115,7 +38,7 @@ void SenecClient::setAuthToken(string login_file)
 
 	try
 	{
-		authentication_response_string = postRequest(login_url.c_str(), login_data.c_str());
+		authentication_response_string = HttpClient::postRequest(login_url.c_str(), login_data.c_str());
 	}
 	catch (NetworkErrorException& e)
 	{
@@ -124,6 +47,7 @@ void SenecClient::setAuthToken(string login_file)
 
 	if (authentication_response_string != "")
 	{
+		// Got valid response for authorization
 		json authentication_response = json::parse(authentication_response_string);
 		token = authentication_response["token"];
 		Initialized = true;
@@ -137,18 +61,16 @@ void SenecClient::setAuthToken(string login_file)
 void SenecClient::setBatteryId()
 {
 	// Setting the battery id
-	json systems_response = json::parse(getRequestWithAuth(systems_url.c_str(), token));
+	json systems_response = json::parse(HttpClient::getRequestWithAuth(systems_url.c_str(), token));
 	battery_id = systems_response[0]["id"];          // Potentially multiple batteries available, selecting the first one
 }
 
 string SenecClient::getLoginData(string login_file)
 {
-	// TODO: include exception handling for login file not present/incorrect
-
 	ifstream file(client_path + login_file);
 	if (!file)
 	{
-		throw IncorrectLoginFileException();		
+		throw LoginFileNotFoundException();		
 	}
 	
 	json jfile;
@@ -167,7 +89,7 @@ string SenecClient::getLoginData(string login_file)
 PowerState SenecClient::getDashboardData()
 {
 	string dashboar_url = systems_url + battery_id + "/dashboard";
-	json dashboard_response = json::parse(getRequestWithAuth(dashboar_url.c_str(), token));
+	json dashboard_response = json::parse(HttpClient::getRequestWithAuth(dashboar_url.c_str(), token));
 	PowerState state = PowerState(dashboard_response);
 	return state;
 }
