@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/logos">
-        <file>resources/strava_logo.png</file>
+        <file>resources/refresh_logo.png</file>
     </qresource>
     <qresource prefix="/arrows">
         <file>resources/arrow_right.png</file>

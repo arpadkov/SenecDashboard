@@ -217,3 +217,62 @@ bool PowerState::drawingFromBattery()
 
 	return false;
 }
+
+const char* PowerState::getBatteryIconPath()
+{
+	if (battery_soc <= 1)
+	{
+		// Battery empty
+		return ":/battery_icon/resources/battery_empty.png";
+	}
+
+	if (battery_soc >= 99)
+	{
+		// Battery full
+		return ":/battery_icon/resources/battery_full.png";
+	}
+
+	const char* batteryIconPath;
+
+	if (drawingFromBattery())
+	{
+		if (battery_soc > 80)
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_80_100_discharging.png";
+		}
+		else if (battery_soc > 50)
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_50_80_discharging.png";
+		}
+		else if (battery_soc > 30)
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_30_60_discharging.png";
+		}
+		else
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_0_30_discharging.png";
+		}
+	}
+
+	else
+	{
+		if (battery_soc > 80)
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_80_100_charging.png";
+		}
+		else if (battery_soc > 50)
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_50_80_charging.png";
+		}
+		else if (battery_soc > 30)
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_30_60_charging.png";
+		}
+		else
+		{
+			batteryIconPath = ":/battery_icon/resources/battery_0_30_charging.png";
+		}
+	}
+
+	return batteryIconPath;
+}

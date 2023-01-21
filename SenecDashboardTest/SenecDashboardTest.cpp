@@ -79,12 +79,6 @@ namespace SenecDashboardTest
 			auto func = [] { SenecClientIncorrectLoginFileNotFound(); };
 			Assert::ExpectException<LoginFileNotFoundException>(func);
 		}
-
-
-
-
-		//PowerState state = client->getDashboardData();
-
 	};
 
 	TEST_CLASS(PowerStateTest)
@@ -108,7 +102,6 @@ namespace SenecDashboardTest
 			Assert::AreEqual(netzeinspeisung, 1700.578);
 			Assert::AreEqual(speicherbeladung, 1000.1);
 		}
-
 	};
 
 	TEST_CLASS(HttpClientTest)

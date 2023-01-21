@@ -20,6 +20,13 @@ SenecDashboard::SenecDashboard(QWidget *parent)
 
     setupTimer();
     setupIcon();
+
+    QAction* hideAction = new QAction("Show/Hide Dashboard", this);
+
+    QMenu* trayMenu = new QMenu();
+    trayMenu->addAction(hideAction);
+    trayIcon->setContextMenu(trayMenu);
+    connect(hideAction, &QAction::triggered, this, &SenecDashboard::showHideDashboard);
 }
 
 SenecDashboard::~SenecDashboard()
@@ -39,6 +46,8 @@ void SenecDashboard::setupStateLabels()
     {
         ui.gridLayout->setAlignment(label, Qt::AlignCenter);
     }
+
+    ui.gridLayout->setAlignment(ui.generationLabel, Qt::AlignBottom);
 }
 
 void SenecDashboard::setupStateIcons()
@@ -46,6 +55,10 @@ void SenecDashboard::setupStateIcons()
     ui.gridIcon->setPixmap(QPixmap(":/consumers/resources/grid.png"));
     ui.gridIcon->setScaledContents(true);
     ui.gridIcon->setFixedSize(QSize(80, 80));
+
+    ui.batteryIcon->setPixmap(QPixmap(":/battery_icon/resources/battery_empty.png"));
+    ui.batteryIcon->setScaledContents(true);
+    ui.batteryIcon->setFixedSize(QSize(80, 80));
 
     ui.consumptionIcon->setPixmap(QPixmap(":/consumers/resources/home.png"));
     ui.consumptionIcon->setScaledContents(true);
@@ -84,9 +97,11 @@ void SenecDashboard::setupTimer()
 void SenecDashboard::setupIcon()
 {
     // App + Tray Icon icon
-    auto appIcon = QIcon(":/battery_icon/resources/battery_full.png");
+    auto appIcon = QIcon(":/battery_icon/resources/battery_empty.png");
     this->setWindowIcon(appIcon);
     this->trayIcon->show();
+    ui.refreshButton->setIcon(QIcon(": / logos / resources / refresh_logo.png"));
+    //ui.refreshButton->setPixmap(QPixmap(": / logos / resources / refresh_logo.png"));
 }
 
 bool SenecDashboard::initializeClient()
@@ -115,7 +130,7 @@ void SenecDashboard::refreshViews()
         PowerState state = client->getDashboardData();
 
         updateWindow(&state);
-        updateTrayIcon(&state);
+        updateBatteryIcons(&state);
         updateTrayTooltip(&state);
         updateArrows(&state);
     }
@@ -124,7 +139,7 @@ void SenecDashboard::refreshViews()
         PowerState state = client->getDashboardData();
 
         updateWindow(&state);
-        updateTrayIcon(&state);
+        updateBatteryIcons(&state);
         updateTrayTooltip(&state);
         updateArrows(&state);
     }
@@ -143,6 +158,7 @@ void SenecDashboard::setNoDataView()
     {
         label->setText("-");
     }
+    ui.timeStampLabel->setText("Could not refresh data");
 
     // Set Arrows
     for (QLabel* arrow : arrows)
@@ -166,7 +182,7 @@ void SenecDashboard::refreshViews(PowerState* state)
     // IMPORTANT: must call the same methods as refreshViews()
 
     updateWindow(state);
-    updateTrayIcon(state);
+    updateBatteryIcons(state);
     updateTrayTooltip(state);
     updateArrows(state);
 }
@@ -194,63 +210,14 @@ void SenecDashboard::updateWindow(PowerState* state)
     ui.usageLabel->setText(usage);
 }
 
-void SenecDashboard::updateTrayIcon(PowerState* state)
+void SenecDashboard::updateBatteryIcons(PowerState* state)
 {
-    float battery_soc = state->battery_soc;
+    const char* batteryIconPath = state->getBatteryIconPath();
+    QIcon batteryIcon = QIcon(batteryIconPath);
 
-    if (battery_soc <= 1)
-    {
-        // Battery empty
-        this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_empty.png"));
-        return;
-    }
-
-    if (battery_soc >= 99)
-    {
-        // Battery full
-        this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_full.png"));
-        return;
-    }
-
-    if (state->drawingFromBattery())
-    {
-        if (battery_soc > 80)
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_80_100_discharging.png"));
-        }
-        else if (battery_soc > 50)
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_50_80_discharging.png"));
-        }
-        else if (battery_soc > 30)
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_30_60_discharging.png"));
-        }
-        else
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_0_30_discharging.png"));
-        }
-    }
-
-    else
-    {
-        if (battery_soc > 80)
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_80_100_charging.png"));
-        }
-        else if (battery_soc > 50)
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_50_80_charging.png"));
-        }
-        else if (battery_soc > 30)
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_30_60_charging.png"));
-        }
-        else
-        {
-            this->trayIcon->setIcon(QIcon(":/battery_icon/resources/battery_0_30_charging.png"));
-        }
-    }
+    trayIcon->setIcon(batteryIcon);
+    this->setWindowIcon(batteryIcon);
+    ui.batteryIcon->setPixmap(QPixmap(batteryIconPath));
 }
 
 void SenecDashboard::updateTrayTooltip(PowerState* state)
@@ -360,4 +327,16 @@ void SenecDashboard::testRead()
     // Reads in test response from "SenecClient/test" and refreshes the view
     PowerState state = client->getTestDashboardData();
     refreshViews(&state);
+}
+
+void SenecDashboard::showHideDashboard()
+{
+    if (this->isVisible())
+    {
+        this->hide();
+    }
+    else
+    {
+        this->show();
+    }
 }

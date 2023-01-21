@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>732</width>
-    <height>569</height>
+    <width>679</width>
+    <height>616</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="timeStampLabel">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>450</y>
+      <x>380</x>
+      <y>440</y>
       <width>171</width>
       <height>41</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="refreshButton">
     <property name="geometry">
      <rect>
-      <x>680</x>
-      <y>10</y>
+      <x>560</x>
+      <y>20</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -43,164 +43,14 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>20</x>
+      <y>10</y>
       <width>531</width>
       <height>421</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
-      <widget class="QLabel" name="generationLabel">
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>14</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>5</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="generationArrow">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="gridLabel">
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>14</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>5</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="gridArrow">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="3">
-      <widget class="QLabel" name="batteryArrow">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="4">
-      <widget class="QLabel" name="batteryLabel">
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>14</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>5</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="usageArrow">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QLabel" name="usageLabel">
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>14</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>5</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
+     <item row="3" column="4">
       <widget class="QLabel" name="battery_SOCLabel">
        <property name="font">
         <font>
@@ -229,31 +79,181 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="generationIcon">
+     <item row="3" column="2">
+      <widget class="QLabel" name="generationArrow">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="gridIcon">
-       <property name="text">
-        <string/>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="3" column="4">
-      <widget class="QLabel" name="batteryIcon">
+     <item row="4" column="1">
+      <widget class="QLabel" name="gridArrow">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
      <item row="4" column="3">
+      <widget class="QLabel" name="batteryArrow">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="gridLabel">
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>14</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>5</number>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QLabel" name="batteryLabel">
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>14</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>5</number>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="gridIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QLabel" name="usageArrow">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="QLabel" name="batteryIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
       <widget class="QLabel" name="consumptionIcon">
        <property name="text">
         <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="2">
+      <widget class="QLabel" name="usageLabel">
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>14</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>5</number>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="generationIcon">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="generationLabel">
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>14</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>5</number>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -265,7 +265,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>732</width>
+     <width>679</width>
      <height>22</height>
     </rect>
    </property>

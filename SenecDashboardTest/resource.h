@@ -2,10 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by SenecDashboardTest.rc
 //
-#define IDR_JSON1                       101
-#define IDR_JSON2                       102
-#define IDR_JSON3                       103
-#define IDR_JSON4                       104
 
 // Next default values for new objects
 // 

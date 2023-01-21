@@ -35,10 +35,4 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\unittest\dashboard_response.json" />
-    <None Include="resources\unittest\login_data_incorrect_format.json" />
-    <None Include="resources\unittest\login_data_invalid.json" />
-    <None Include="resources\unittest\login_data_valid.json" />
-  </ItemGroup>
 </Project>

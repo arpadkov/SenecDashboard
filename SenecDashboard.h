@@ -20,6 +20,8 @@ public:
 
 private:
     QSystemTrayIcon* trayIcon;
+    //QAction* hideAction;
+    //QMenu trayMenu;
 
     Ui::SenecDashboardClass ui;
     SenecClient* client;
@@ -37,7 +39,7 @@ private:
 
     void setNoDataView();
     void updateWindow(PowerState*);
-    void updateTrayIcon(PowerState*);
+    void updateBatteryIcons(PowerState*);
     void updateTrayTooltip(PowerState*);
     void updateArrows(PowerState*);
 
@@ -49,4 +51,5 @@ private:
 private slots:
     void on_refreshButton_clicked();
     void testRead();
+    void showHideDashboard();
 };

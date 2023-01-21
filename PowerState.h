@@ -42,5 +42,7 @@ public:
 
 	bool drawingFromGrid();
 	bool drawingFromBattery();
+
+	const char* getBatteryIconPath();
 };
 
