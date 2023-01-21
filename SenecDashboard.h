@@ -17,11 +17,11 @@ public:
 
     bool initializeClient();
     void refreshViews();
+    void refreshTrayShowHide();
 
 private:
     QSystemTrayIcon* trayIcon;
-    //QAction* hideAction;
-    //QMenu trayMenu;
+    QAction* showHideAction;
 
     Ui::SenecDashboardClass ui;
     SenecClient* client;
@@ -34,6 +34,7 @@ private:
     void setupArrows();
     void setupTimer();
     void setupIcon();
+    void setupTrayMenu();
 
     void refreshViews(PowerState*);     // For reading in test JSON response
 
@@ -52,4 +53,6 @@ private slots:
     void on_refreshButton_clicked();
     void testRead();
     void showHideDashboard();
+    void on_actionExit_triggered();
+    void on_refreshAction_triggered();
 };

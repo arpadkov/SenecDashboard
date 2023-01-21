@@ -21,12 +21,7 @@ SenecDashboard::SenecDashboard(QWidget *parent)
     setupTimer();
     setupIcon();
 
-    QAction* hideAction = new QAction("Show/Hide Dashboard", this);
-
-    QMenu* trayMenu = new QMenu();
-    trayMenu->addAction(hideAction);
-    trayIcon->setContextMenu(trayMenu);
-    connect(hideAction, &QAction::triggered, this, &SenecDashboard::showHideDashboard);
+    setupTrayMenu();
 }
 
 SenecDashboard::~SenecDashboard()
@@ -100,8 +95,38 @@ void SenecDashboard::setupIcon()
     auto appIcon = QIcon(":/battery_icon/resources/battery_empty.png");
     this->setWindowIcon(appIcon);
     this->trayIcon->show();
-    ui.refreshButton->setIcon(QIcon(": / logos / resources / refresh_logo.png"));
-    //ui.refreshButton->setPixmap(QPixmap(": / logos / resources / refresh_logo.png"));
+
+    ui.refreshButton->setIcon(QIcon(":/logos/resources/refresh_logo.png"));
+    ui.refreshButton->setIconSize(QSize(24, 24));
+    ui.refreshButton->setFlat(true);
+}
+
+void SenecDashboard::setupTrayMenu()
+{
+    
+    QMenu* trayMenu = new QMenu();
+
+    // Show/Hide action text changed from outside on startup
+    showHideAction = new QAction(this);
+    connect(showHideAction, &QAction::triggered, this, &SenecDashboard::showHideDashboard);
+
+    // Exit action
+    QAction* exitAction = new QAction("Close Dashboard", this);
+    connect(exitAction, &QAction::triggered, this, &SenecDashboard::on_actionExit_triggered);
+    exitAction->setIcon(QIcon(":/logos/resources/close_logo.png"));
+
+    // Refresh action
+    QAction* refreshAction = new QAction("Refresh Dashboard", this);
+    connect(refreshAction, &QAction::triggered, this, &SenecDashboard::on_refreshAction_triggered);
+    refreshAction->setIcon(QIcon(":/logos/resources/refresh_logo.png"));
+
+    trayMenu->addAction(refreshAction);
+    trayMenu->addAction(showHideAction);
+    trayMenu->addAction(exitAction);    
+
+    trayIcon->setContextMenu(trayMenu);
+
+    
 }
 
 bool SenecDashboard::initializeClient()
@@ -339,4 +364,29 @@ void SenecDashboard::showHideDashboard()
     {
         this->show();
     }
+
+    refreshTrayShowHide();
+}
+
+void SenecDashboard::refreshTrayShowHide()
+{
+    if (this->isVisible())
+    {
+        showHideAction->setText("Hide Dashboard");        
+        showHideAction->setIcon(QIcon(":/logos/resources/hide_logo.png"));
+    }
+    else
+    {
+        showHideAction->setText("Show Dashboard");
+        showHideAction->setIcon(QIcon(":/logos/resources/show_logo.png"));
+    }
+}
+
+void SenecDashboard::on_refreshAction_triggered()
+{
+    refreshViews();
+}
+
+void SenecDashboard::on_actionExit_triggered() {
+    QApplication::quit();
 }

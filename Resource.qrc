@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/logos">
         <file>resources/refresh_logo.png</file>
+        <file>resources/hide_logo.png</file>
+        <file>resources/show_logo.png</file>
+        <file>resources/close_logo.png</file>
     </qresource>
     <qresource prefix="/arrows">
         <file>resources/arrow_right.png</file>
