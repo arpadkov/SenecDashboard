@@ -33,14 +33,7 @@ void SenecClient::setAuthToken(string login_file)
 	string login_data = getLoginData(login_file);
 	string authentication_response_string;
 
-	try
-	{
-		authentication_response_string = HttpClient::postRequest(login_url.c_str(), login_data.c_str());
-	}
-	catch (NetworkErrorException& e)
-	{
-		throw;
-	}
+	authentication_response_string = HttpClient::postRequest(login_url.c_str(), login_data.c_str());
 
 	if (authentication_response_string != "")
 	{
@@ -57,7 +50,7 @@ void SenecClient::setAuthToken(string login_file)
 
 void SenecClient::setBatteryId()
 {
-	// Setting the battery id
+	// Setting the battery id, neccessary to get Dashboard response
 	json systems_response = json::parse(HttpClient::getRequestWithAuth(systems_url.c_str(), token));
 	battery_id = systems_response[0]["id"];          // Potentially multiple batteries available, selecting the first one
 }

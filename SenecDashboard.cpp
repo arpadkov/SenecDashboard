@@ -123,9 +123,7 @@ void SenecDashboard::setupTrayMenu()
     trayMenu->addAction(showHideAction);
     trayMenu->addAction(exitAction);    
 
-    trayIcon->setContextMenu(trayMenu);
-
-    
+    trayIcon->setContextMenu(trayMenu);    
 }
 
 bool SenecDashboard::initializeClient()

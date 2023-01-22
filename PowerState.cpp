@@ -29,8 +29,9 @@ PowerState::PowerState(json json_data)
 		generation = json_data["aktuell"]["stromerzeugung"]["wert"];
 		usage = json_data["aktuell"]["stromverbrauch"]["wert"];
 	}
-	catch (const std::exception& ex)
+	catch (const std::exception&)
 	{
+		// "Changing" the exception from json parser
 		throw IncorrectDashboardResponseException();
 	}
 
