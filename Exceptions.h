@@ -1,5 +1,4 @@
 #pragma once
-
 #include <exception>
 
 struct InvalidCredentialsException : public std::exception {
@@ -20,7 +19,7 @@ struct LoginFileNotFoundException : public std::exception {
     }
 };
 
-struct IncorrectDashboardResponse : public std::exception {
+struct IncorrectDashboardResponseException : public std::exception {
     const char* what() const throw () {
         return "Received Dashboard data not in correct format";
     }

@@ -1,6 +1,4 @@
 #pragma once
-
-//#include <string>
 #include "PowerState.h"
 
 class SenecClient

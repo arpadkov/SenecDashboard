@@ -1,16 +1,13 @@
-#include <fstream>
-#include <nlohmann/json.hpp>
-#include <curl/curl.h>
 #include "SenecClient.h"
 #include "HttpClient.h"
 #include "PowerState.h"
 #include "Exceptions.h"
+#include <nlohmann/json.hpp>
+#include <curl/curl.h>
+#include <fstream>
 
-using namespace std;
+using string = std::string;
 using json = nlohmann::json;
-
-
-
 
 SenecClient::SenecClient()
 {
@@ -67,7 +64,7 @@ void SenecClient::setBatteryId()
 
 string SenecClient::getLoginData(string login_file)
 {
-	ifstream file(client_path + login_file);
+	std::ifstream file(client_path + login_file);
 	if (!file)
 	{
 		throw LoginFileNotFoundException();		
@@ -78,7 +75,8 @@ string SenecClient::getLoginData(string login_file)
 	{
 		jfile = json::parse(file);
 	}
-	catch (json::parse_error parseError) {
+	catch (json::parse_error parseError)
+	{
 		throw;
 	}
 
@@ -98,8 +96,9 @@ PowerState SenecClient::getTestDashboardData()
 {
 	// TODO: include exception handling for test response file not present/incorrect
 	string test_path = client_path + "\\test\\test_dashboard_response.json";
-	ifstream file(test_path);
-	json jfile = json::parse(file);
+	std::ifstream file(test_path);
+
+	json jfile = json::parse(file);	
 
 	PowerState state = PowerState(jfile);
 

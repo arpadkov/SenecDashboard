@@ -152,12 +152,22 @@ void SenecDashboard::refreshViews()
 
     if (client->Initialized)
     {
-        PowerState state = client->getDashboardData();
+        try
+        {
+            PowerState state = client->getDashboardData();
+            updateWindow(&state);
+            updateBatteryIcons(&state);
+            updateTrayTooltip(&state);
+            updateArrows(&state);
+        }
+        catch (const std::exception& ex)
+        {
+            QMessageBox warningMessageBox;
+            warningMessageBox.setText(ex.what());
+            warningMessageBox.exec();
+        }
 
-        updateWindow(&state);
-        updateBatteryIcons(&state);
-        updateTrayTooltip(&state);
-        updateArrows(&state);
+
     }
     else if (initializeClient())
     {
@@ -350,8 +360,18 @@ void SenecDashboard::on_refreshButton_clicked()
 void SenecDashboard::testRead()
 {    
     // Reads in test response from "SenecClient/test" and refreshes the view
-    PowerState state = client->getTestDashboardData();
-    refreshViews(&state);
+    try
+    {
+        PowerState state = client->getTestDashboardData();
+        refreshViews(&state);
+    }
+    catch (const std::exception& ex)
+    {
+        QMessageBox warningMessageBox;
+        warningMessageBox.setText(ex.what());
+        warningMessageBox.exec();
+    }
+
 }
 
 void SenecDashboard::showHideDashboard()

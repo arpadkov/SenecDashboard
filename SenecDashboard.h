@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
-#include <QSystemTrayIcon>
-#include <QMenu>
 #include "ui_SenecDashboard.h"
 #include "SenecClient.h"
 #include "PowerState.h"
+#include <QtWidgets/QMainWindow>
+#include <QSystemTrayIcon>
+#include <QMenu>
 
 class SenecDashboard : public QMainWindow
 {

@@ -1,23 +1,24 @@
 #include "HttpClient.h"
-#include <curl/curl.h>
 #include "Exceptions.h"
+#include <curl/curl.h>
 
+using string = std::string;
 
 size_t HttpClient::writeCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
 	// WriteCallback function, used by curl: CURLOPT_WRITEFUNCTION
-	((std::string*)userp)->append((char*)contents, size * nmemb);
+	((string*)userp)->append((char*)contents, size * nmemb);
 	return size * nmemb;
 }
 
-std::string HttpClient::postRequest(const char* url, const char* data)
+string HttpClient::postRequest(const char* url, const char* data)
 {
 	// Sending a POST request with json data
 	CURLcode res;
 	CURL* curl;
 	curl = curl_easy_init();
 
-	std::string response;
+	string response;
 
 	// curl setup
 	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
@@ -46,7 +47,7 @@ std::string HttpClient::postRequest(const char* url, const char* data)
 	return response;
 }
 
-std::string HttpClient::getRequestWithAuth(const char* url, std::string authorization_token)
+string HttpClient::getRequestWithAuth(const char* url, string authorization_token)
 {
 	// Sending a GET request with Authorization token in the header
 	CURL* curl;

@@ -1,14 +1,15 @@
+#include "PowerState.h"
+#include "Exceptions.h"
 #include <nlohmann/json.hpp>
 #include <sstream>
-#include "PowerState.h"
 
-using namespace std;
+using string = std::string;
 using json = nlohmann::json;
 
 string roundFloatToStr(float number, int precision)
 {
-	stringstream stream;
-	stream << fixed << setprecision(precision) << number;
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(precision) << number;
 	return stream.str();
 }
 
@@ -16,15 +17,22 @@ PowerState::PowerState(json json_data)
 {
 	timestamp = json_data["zeitstempel"];
 
-	// All values in W
-	self_suffiecency = json_data["aktuell"]["autarkie"]["wert"];
-	from_grid = json_data["aktuell"]["netzbezug"]["wert"];
-	to_grid = json_data["aktuell"]["netzeinspeisung"]["wert"];
-	to_battery = json_data["aktuell"]["speicherbeladung"]["wert"];
-	from_battery = json_data["aktuell"]["speicherentnahme"]["wert"];
-	battery_soc = json_data["aktuell"]["speicherfuellstand"]["wert"];
-	generation = json_data["aktuell"]["stromerzeugung"]["wert"];
-	usage = json_data["aktuell"]["stromverbrauch"]["wert"];
+	try
+	{
+		// All values in W
+		self_suffiecency = json_data["aktuell"]["autarkie"]["wert"];
+		from_grid = json_data["aktuell"]["netzbezug"]["wert"];
+		to_grid = json_data["aktuell"]["netzeinspeisung"]["wert"];
+		to_battery = json_data["aktuell"]["speicherbeladung"]["wert"];
+		from_battery = json_data["aktuell"]["speicherentnahme"]["wert"];
+		battery_soc = json_data["aktuell"]["speicherfuellstand"]["wert"];
+		generation = json_data["aktuell"]["stromerzeugung"]["wert"];
+		usage = json_data["aktuell"]["stromverbrauch"]["wert"];
+	}
+	catch (const std::exception& ex)
+	{
+		throw IncorrectDashboardResponseException();
+	}
 
 	maxGridUtilization = 5000;
 	maxBatteryUtilization = 2000;
