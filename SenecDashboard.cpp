@@ -1,10 +1,9 @@
-# include <QTimer>
-#include <QMessageBox>
 #include "SenecDashboard.h"
 #include "SenecClient.h"
 #include "PowerState.h"
 #include "Exceptions.h"
-
+#include <QTimer>
+#include <QMessageBox>
 
 SenecDashboard::SenecDashboard(QWidget *parent)
     : QMainWindow(parent)
