@@ -13,6 +13,26 @@ string roundFloatToStr(float number, int precision)
 	return stream.str();
 }
 
+PowerState::PowerState()
+{
+	self_suffiecency = 0;
+	from_grid = 0;
+	to_grid = 0;
+	to_battery = 0;
+	from_battery = 0;
+
+	generation = 0;
+	usage = 0;
+	timestamp = "";
+
+	maxGridUtilization = 0;
+	maxBatteryUtilization = 0;
+	maxGenerationUtilization = 0;
+	maxUsageUtilization = 0;
+
+	battery_soc = 0;
+}
+
 PowerState::PowerState(json json_data)
 {
 	timestamp = json_data["zeitstempel"];
@@ -255,7 +275,7 @@ const char* PowerState::getBatteryIconPath()
 		}
 		else if (battery_soc > 30)
 		{
-			batteryIconPath = ":/battery_icon/resources/battery_30_60_discharging.png";
+			batteryIconPath = ":/battery_icon/resources/battery_30_50_discharging.png";
 		}
 		else
 		{
@@ -275,7 +295,7 @@ const char* PowerState::getBatteryIconPath()
 		}
 		else if (battery_soc > 30)
 		{
-			batteryIconPath = ":/battery_icon/resources/battery_30_60_charging.png";
+			batteryIconPath = ":/battery_icon/resources/battery_30_50_charging.png";
 		}
 		else
 		{

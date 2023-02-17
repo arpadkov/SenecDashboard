@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 
     dashboard.setVisible(startWithWindow);
     dashboard.refreshTrayShowHide();
+    dashboard.setPowerState();
     dashboard.refreshViews();
 
     return application.exec();

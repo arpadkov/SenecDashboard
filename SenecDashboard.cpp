@@ -21,6 +21,8 @@ SenecDashboard::SenecDashboard(QWidget *parent)
     setupIcon();
 
     setupTrayMenu();
+
+    //state = client->getDashboardData();
 }
 
 SenecDashboard::~SenecDashboard()
@@ -143,19 +145,13 @@ bool SenecDashboard::initializeClient()
     }
 }
 
-void SenecDashboard::refreshViews()
-{
-    setNoDataView();
+void SenecDashboard::setPowerState() {
 
     if (client->Initialized)
     {
         try
         {
-            PowerState state = client->getDashboardData();
-            updateWindow(&state);
-            updateBatteryIcons(&state);
-            updateTrayTooltip(&state);
-            updateArrows(&state);
+            state = client->getDashboardData();
         }
         catch (const std::exception& ex)
         {
@@ -168,19 +164,25 @@ void SenecDashboard::refreshViews()
     }
     else if (initializeClient())
     {
-        PowerState state = client->getDashboardData();
-
-        updateWindow(&state);
-        updateBatteryIcons(&state);
-        updateTrayTooltip(&state);
-        updateArrows(&state);
+        state = client->getDashboardData();
     }
+
     else
     {
         QMessageBox warningMessageBox;
         warningMessageBox.setText("SenecClient not initialized. Will not refresh data");
         warningMessageBox.exec();
     }
+}
+
+void SenecDashboard::refreshViews()
+{
+    setNoDataView();
+
+    updateWindow();
+    updateBatteryIcons();
+    updateTrayTooltip();
+    updateArrows();
 }
 
 void SenecDashboard::setNoDataView()
@@ -208,43 +210,32 @@ void SenecDashboard::setNoDataView()
 
 }
 
-void SenecDashboard::refreshViews(PowerState* state)
+void SenecDashboard::updateWindow()
 {
-    // Refreshes the view from test file
-    // IMPORTANT: must call the same methods as refreshViews()
+    QString self_sufficency = QString::fromStdString(state.getSelfSuffiency());
 
-    updateWindow(state);
-    updateBatteryIcons(state);
-    updateTrayTooltip(state);
-    updateArrows(state);
-}
-
-void SenecDashboard::updateWindow(PowerState* state)
-{
-    QString self_sufficency = QString::fromStdString(state->getSelfSuffiency());
-
-    QString timestamp = QString::fromStdString(state->getTimeStamp());
+    QString timestamp = QString::fromStdString(state.getTimeStamp());
     ui.timeStampLabel->setText(timestamp);
 
-    QString battery_soc = QString::fromStdString(state->getBatterySOC());
+    QString battery_soc = QString::fromStdString(state.getBatterySOC());
     ui.battery_SOCLabel->setText(battery_soc);
 
-    QString generation = QString::fromStdString(state->getGeneration());
+    QString generation = QString::fromStdString(state.getGeneration());
     ui.generationLabel->setText(generation);
 
-    QString grid_state = QString::fromStdString(state->getGridState());
+    QString grid_state = QString::fromStdString(state.getGridState());
     ui.gridLabel->setText(grid_state);
 
-    QString battery_state = QString::fromStdString(state->getBatteryState());
+    QString battery_state = QString::fromStdString(state.getBatteryState());
     ui.batteryLabel->setText(battery_state);
 
-    QString usage = QString::fromStdString(state->getUsage());
+    QString usage = QString::fromStdString(state.getUsage());
     ui.usageLabel->setText(usage);
 }
 
-void SenecDashboard::updateBatteryIcons(PowerState* state)
+void SenecDashboard::updateBatteryIcons()
 {
-    const char* batteryIconPath = state->getBatteryIconPath();
+    const char* batteryIconPath = state.getBatteryIconPath();
     QIcon batteryIcon = QIcon(batteryIconPath);
 
     trayIcon->setIcon(batteryIcon);
@@ -252,24 +243,24 @@ void SenecDashboard::updateBatteryIcons(PowerState* state)
     ui.batteryIcon->setPixmap(QPixmap(batteryIconPath));
 }
 
-void SenecDashboard::updateTrayTooltip(PowerState* state)
+void SenecDashboard::updateTrayTooltip()
 {
     QString tooltip = QString("");
-    tooltip.append("Battery: " + QString::fromStdString(state->getBatterySOC()) + "\n");
-    tooltip.append("Grid usage: " + QString::fromStdString(state->getGridState()) + "\n");
-    tooltip.append("Battery usage: " + QString::fromStdString(state->getBatteryState()) + "\n");
-    tooltip.append("Consumption: " + QString::fromStdString(state->getUsage()) + "\n");
-    tooltip.append("Production: " + QString::fromStdString(state->getGeneration()) + "\n");
+    tooltip.append("Battery: " + QString::fromStdString(state.getBatterySOC()) + "\n");
+    tooltip.append("Grid usage: " + QString::fromStdString(state.getGridState()) + "\n");
+    tooltip.append("Battery usage: " + QString::fromStdString(state.getBatteryState()) + "\n");
+    tooltip.append("Consumption: " + QString::fromStdString(state.getUsage()) + "\n");
+    tooltip.append("Production: " + QString::fromStdString(state.getGeneration()) + "\n");
 
     this->trayIcon->setToolTip(tooltip);
 }
 
-void SenecDashboard::updateArrows(PowerState* state)
+void SenecDashboard::updateArrows()
 {
-    updateGenerationArrow(state);
-    updateGridArrow(state);
-    updateBatteryArrow(state);
-    updateUsageArrow(state);
+    updateGenerationArrow();
+    updateGridArrow();
+    updateBatteryArrow();
+    updateUsageArrow();
 
     for (QLabel* arrow : arrows)
     {
@@ -277,9 +268,9 @@ void SenecDashboard::updateArrows(PowerState* state)
     }
 }
 
-void SenecDashboard::updateGenerationArrow(PowerState* state)
+void SenecDashboard::updateGenerationArrow()
 {
-    float utilization = state->getGenerationUtilization();
+    float utilization = state.getGenerationUtilization();
 
     ui.generationArrow->setPixmap(QPixmap(":/arrows/resources/arrow_down.png"));
     ui.generationArrow->setFixedHeight(80);
@@ -291,13 +282,13 @@ void SenecDashboard::updateGenerationArrow(PowerState* state)
     ui.generationArrow->setFixedWidth(width);
 }
 
-void SenecDashboard::updateGridArrow(PowerState* state)
+void SenecDashboard::updateGridArrow()
 {
-    float utilization = state->getGridUtilization();
+    float utilization = state.getGridUtilization();
 
     ui.gridArrow->setFixedWidth(80);
 
-    if (state->drawingFromGrid())
+    if (state.drawingFromGrid())
     {
         ui.gridArrow->setPixmap(QPixmap(":/arrows/resources/arrow_right.png"));
     }
@@ -313,13 +304,13 @@ void SenecDashboard::updateGridArrow(PowerState* state)
     ui.gridArrow->setFixedHeight(height);
 }
 
-void SenecDashboard::updateBatteryArrow(PowerState* state)
+void SenecDashboard::updateBatteryArrow()
 {
-    float utilization = state->getBatteryUtilization();
+    float utilization = state.getBatteryUtilization();
 
     ui.batteryArrow->setFixedWidth(80);
 
-    if (state->drawingFromBattery())
+    if (state.drawingFromBattery())
     {
         ui.batteryArrow->setPixmap(QPixmap(":/arrows/resources/arrow_left.png"));
     }
@@ -335,9 +326,9 @@ void SenecDashboard::updateBatteryArrow(PowerState* state)
     ui.batteryArrow->setFixedHeight(height);
 }
 
-void SenecDashboard::updateUsageArrow(PowerState* state)
+void SenecDashboard::updateUsageArrow()
 {
-    float utilization = state->getUsageUtilization();
+    float utilization = state.getUsageUtilization();
 
     ui.usageArrow->setPixmap(QPixmap(":/arrows/resources/arrow_down.png"));
     ui.usageArrow->setFixedHeight(80);
@@ -351,6 +342,7 @@ void SenecDashboard::updateUsageArrow(PowerState* state)
 
 void SenecDashboard::on_refreshButton_clicked()
 {
+    state = client->getDashboardData();
     refreshViews();
 }
 
@@ -359,8 +351,8 @@ void SenecDashboard::testRead()
     // Reads in test response from "SenecClient/test" and refreshes the view
     try
     {
-        PowerState state = client->getTestDashboardData();
-        refreshViews(&state);
+        state = client->getTestDashboardData();
+        refreshViews();
     }
     catch (const std::exception& ex)
     {

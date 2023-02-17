@@ -19,7 +19,11 @@ public:
     void refreshViews();
     void refreshTrayShowHide();
 
+    void setPowerState();
+
 private:
+    PowerState state;
+
     QSystemTrayIcon* trayIcon;
     QAction* showHideAction;
 
@@ -36,18 +40,16 @@ private:
     void setupIcon();
     void setupTrayMenu();
 
-    void refreshViews(PowerState*);     // For reading in test JSON response
-
     void setNoDataView();
-    void updateWindow(PowerState*);
-    void updateBatteryIcons(PowerState*);
-    void updateTrayTooltip(PowerState*);
-    void updateArrows(PowerState*);
+    void updateWindow();
+    void updateBatteryIcons();
+    void updateTrayTooltip();
+    void updateArrows();
 
-    void updateGenerationArrow(PowerState*);
-    void updateGridArrow(PowerState*);
-    void updateBatteryArrow(PowerState*);
-    void updateUsageArrow(PowerState*);
+    void updateGenerationArrow();
+    void updateGridArrow();
+    void updateBatteryArrow();
+    void updateUsageArrow();
 
 private slots:
     void on_refreshButton_clicked();

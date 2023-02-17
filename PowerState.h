@@ -21,6 +21,7 @@ private:
 	float maxUsageUtilization;
 
 public:
+	PowerState();
 	PowerState(nlohmann::json json_data);
 
 	float battery_soc;
